@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
+	//package to serve our HTTP request and server
 	"github.com/gorilla/mux"
 )
 
@@ -17,7 +18,6 @@ type User struct {
 	Occupation string `json:"occupation"`
 }
 
-var userId int64
 var allUsers []User
 
 func main() {
@@ -33,10 +33,10 @@ func main() {
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user User
-	json.NewDecoder(r.Body).Decode(&user)
-	user.Id = strconv.Itoa(rand.Intn(1000000))
-	allUsers = append(allUsers, user)
+	var user User                              //initialize with struct
+	json.NewDecoder(r.Body).Decode(&user)      //passing JSON object to struct
+	user.Id = strconv.Itoa(rand.Intn(1000000)) //Generate random ID
+	allUsers = append(allUsers, user)          //save user into all users in memory
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode("user Created")
